@@ -246,7 +246,7 @@ def generate(set_name: str, temperature: float | None, candidate: Path) -> Path:
 
         def one(jd: Path) -> bool:
             say = lambda message: print(f"{jd.stem[:2]} {message.strip()}", flush=True)  # noqa: E731
-            job, kept = {"jd.txt": jd.read_text(encoding="utf-8").encode("utf-8")}, {}
+            job, kept = {"job_description.txt": jd.read_text(encoding="utf-8").encode("utf-8")}, {}
 
             def store(item) -> None:
                 if item.location == "CV" and (item.type == "cv" or item.name == "cv.json"):
@@ -266,7 +266,7 @@ def generate(set_name: str, temperature: float | None, candidate: Path) -> Path:
                 json.dumps(document, indent=2, ensure_ascii=False), encoding="utf-8")
             (run / f"{jd.stem}.pdf").write_bytes(kept["cv"])
             (run / f"{jd.stem}.units.txt").write_text(units_text(document), encoding="utf-8")
-            say(f"done (request {session_id(job['jd.txt'])})")
+            say(f"done (request {session_id(job['job_description.txt'])})")
             return True
 
         with ThreadPoolExecutor(PARALLEL) as pool:

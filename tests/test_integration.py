@@ -23,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 #: The server repository, a submodule: its pipeline test helpers and its
 #: fictional candidate are the ones the server's own tests use.
 SERVER_REPO = REPO_ROOT / "ats-strike"
-sys.path.insert(0, str(SERVER_REPO / "pipeline" / "tests"))
+sys.path.insert(0, str(SERVER_REPO / "tests" / "pipeline"))
 
 from cv_client.api import CVError, HttpApi                 # noqa: E402
 from cv_client.config import Config                         # noqa: E402
@@ -213,9 +213,9 @@ def test_a_posting_the_server_already_wrote_is_replayed_not_paid_for_twice(serve
     """The client died after the server had finished: the next run of the same
     posting gets the CV that is already there."""
     v11 = servers["v11"]
-    job = {"jd.txt": JD_TEXT.encode()}
-    v11.api.create_cv(v11.server.pack(), job, {}, session_id(job["jd.txt"]))
-    *_, (_, last, _) = v11.api.events(session_id(job["jd.txt"]))  # followed, never acknowledged
+    job = {"job_description.txt": JD_TEXT.encode()}
+    v11.api.create_cv(v11.server.pack(), job, {}, session_id(job["job_description.txt"]))
+    *_, (_, last, _) = v11.api.events(session_id(job["job_description.txt"]))  # followed, never acknowledged
     assert last == "done"
     paid = model_calls(v11.models)
 
@@ -242,4 +242,4 @@ def test_a_server_error_reaches_the_client_as_a_typed_failure(run, servers, caps
 def test_the_client_reports_an_unreachable_server_clearly():
     api = HttpApi("http://127.0.0.1:1")  # nothing listens here
     with pytest.raises(CVError, match="cannot reach the ats-strike server"):
-        api.detect({"jd.txt": b"x" * 1500})
+        api.detect({"job_description.txt": b"x" * 1500})
