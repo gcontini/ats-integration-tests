@@ -1,0 +1,33 @@
+# ats-integration-tests — the client and the server, side by side.
+#
+#   contracts/          the wire format: the ats-strike-contract repository
+#   ats-strike/         the server and its pipeline: the ats-strike repository
+#   ats-strike-client/  the CLI: the ats-strike-client repository
+#
+# All three are git submodules, and this workspace takes its members from
+# them. The commits they point at are the combination under test; a change in
+# one of them is a commit there plus the new pointer here.
+#
+#     git submodule update --init   check the three out (not --recursive)
+#     uv sync                       install every member into one .venv, editable
+#     uv run pytest                 the integration test and cv-eval's scoring tests
+#     uv run python tests/cv_quality/cv_eval.py --help    cv-eval, see its skill
+
+[tool.uv.workspace]
+members = ["contracts", "ats-strike/pipeline", "ats-strike/server", "ats-strike-client/client"]
+
+# Each member says `ats-strike-contracts = { workspace = true }` (the server
+# says the same of the pipeline), and uv reads that against the member's own
+# repository, where contracts/ is a submodule of its own: not checked out here,
+# and a second copy of the package if it were. Ignoring those two sources makes
+# both names resolve to the members above, so every package here uses the one
+# contracts/ at the top.
+[tool.uv]
+no-sources-package = ["ats-strike-contracts", "ats-strike-pipeline"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["latex: needs a pdflatex binary on PATH"]

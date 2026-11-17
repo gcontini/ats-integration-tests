@@ -1,0 +1,19 @@
+# --- Secrets ----------------------------------------------------------------
+# cv-eval's model keys. The server in ats-strike/ finds this one too.
+.env
+.env.*
+
+# --- CV quality runs --------------------------------------------------------
+# Generated CVs carry your contact details.
+/tests/cv_quality/runs/
+
+# --- Python -----------------------------------------------------------------
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+
+.vscode

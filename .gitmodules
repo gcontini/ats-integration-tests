@@ -1,0 +1,9 @@
+[submodule "contracts"]
+	path = contracts
+	url = https://github.com/gcontini/ats-strike-contract
+[submodule "ats-strike"]
+	path = ats-strike
+	url = https://github.com/gcontini/ats-strike
+[submodule "ats-strike-client"]
+	path = ats-strike-client
+	url = https://github.com/gcontini/ats-strike-client
