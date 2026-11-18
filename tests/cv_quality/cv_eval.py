@@ -218,7 +218,7 @@ def generate(set_name: str, temperature: float | None, candidate: Path) -> Path:
 
     The client is handed a temporary server folder holding only the
     candidate's two files: no prompt, template or image, so every prompt is
-    the server's own, from the submodule's pipeline/resources.
+    the server's own, from the submodule's resources/v1.
 
     The CVs that failed are written once more, at most RETRY_SHARE of the set;
     the line before the run folder says how many failed."""

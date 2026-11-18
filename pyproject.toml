@@ -14,16 +14,16 @@
 #     uv run python tests/cv_quality/cv_eval.py --help    cv-eval, see its skill
 
 [tool.uv.workspace]
-members = ["contracts", "ats-strike/pipeline", "ats-strike/server", "ats-strike-client/client"]
+members = ["contracts", "ats-strike", "ats-strike-client/client"]
 
-# Each member says `ats-strike-contracts = { workspace = true }` (the server
-# says the same of the pipeline), and uv reads that against the member's own
-# repository, where contracts/ is a submodule of its own: not checked out here,
-# and a second copy of the package if it were. Ignoring those two sources makes
-# both names resolve to the members above, so every package here uses the one
+# Each member names a source for ats-strike-contracts in its own repository
+# (the client `{ workspace = true }`, the server `{ path = "src/contracts" }`),
+# where the contracts are a submodule of its own: not checked out here, and a
+# second copy of the package if they were. Ignoring those sources makes the
+# name resolve to the member above, so every package here uses the one
 # contracts/ at the top.
 [tool.uv]
-no-sources-package = ["ats-strike-contracts", "ats-strike-pipeline"]
+no-sources-package = ["ats-strike-contracts"]
 
 [dependency-groups]
 dev = ["pytest>=8"]

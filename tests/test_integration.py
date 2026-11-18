@@ -23,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 #: The server repository, a submodule: its pipeline test helpers and its
 #: fictional candidate are the ones the server's own tests use.
 SERVER_REPO = REPO_ROOT / "ats-strike"
-sys.path.insert(0, str(SERVER_REPO / "tests" / "pipeline"))
+sys.path.insert(0, str(SERVER_REPO / "tests" / "pipeline_v1"))
 
 from cv_client.api import CVError, HttpApi                 # noqa: E402
 from cv_client.config import Config                         # noqa: E402
@@ -37,8 +37,8 @@ from cv_client.stages.working import WorkingProcessor       # noqa: E402
 from cv_client.tracking import build_tracker                # noqa: E402
 from cv_client.ui import Decision                           # noqa: E402
 from cv_client.workspace import Artifacts, Workspace        # noqa: E402
-from cv_pipeline import Pipeline                            # noqa: E402
-from cv_pipeline.bundle import default_bundle               # noqa: E402
+from pipeline_v1 import Pipeline                            # noqa: E402
+from pipeline_v1.bundle import default_bundle               # noqa: E402
 from cv_server.api.app import create_app                    # noqa: E402
 from cv_server.api.deps import AppState                     # noqa: E402
 from cv_server.api.settings import Settings                 # noqa: E402
