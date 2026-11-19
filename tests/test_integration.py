@@ -185,6 +185,12 @@ def test_one_posting_one_analysis_two_pdfs_in_one_folder(run, servers):
         assert f"  {name} " in log and "[cv.profile_scoring]" in log
         assert any(line.startswith(f"  {name} ") and "Σ " in line and "model call(s)" in line
                    for line in log.splitlines()), f"{name}'s total"
+    # The spreadsheet row names what wrote the PDF it points at: the default's.
+    sheet = openpyxl.load_workbook(run.workspace.root / "applications.xlsx").active
+    row = dict(zip([c.value for c in sheet[1]], [c.value for c in sheet[2]]))
+    assert row["generator"] == f"v11|{servers['v11'].api.status().data.version}"
+    assert row["cv_path"].endswith(f"{STEM}.pdf")
+
     # Filed, so acknowledged: neither server keeps anything of it.
     assert not any(servers["v11"].work.iterdir()) and not any(servers["v05"].work.iterdir())
 
