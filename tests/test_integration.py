@@ -88,15 +88,16 @@ class Running:
         self.work.mkdir(parents=True)
         settings = Settings(work_root=self.work)
         state = AppState(settings=settings,
-                         pipeline=Pipeline(llm=self.models, bundle=default_bundle(),
-                                           budget_seconds=120.0),
+                         pipelines={"v1": Pipeline(llm=self.models, bundle=default_bundle(),
+                                                   budget_seconds=120.0)},
                          job_slots=BoundedSemaphore(settings.max_concurrent_jobs))
-        self.http = TestClient(create_app(state=state))
+        # The url names the pipeline, as a cv.toml section's does.
+        url = f"http://{name}.invalid/v1"
+        self.http = TestClient(create_app(state=state), base_url=url)
         folder = root / "data" / name
         folder.mkdir(parents=True)
         for filename in CANDIDATE_FILES:
             shutil.copy(EXAMPLE / filename, folder / filename)
-        url = f"http://{name}.invalid"
         self.server = Server(name=name, folder=folder, url=url, default=default)
         # TestClient runs the real app in-process and is an httpx.Client, so the
         # client's own request code is what makes the calls.
